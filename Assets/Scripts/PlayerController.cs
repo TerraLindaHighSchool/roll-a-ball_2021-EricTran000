@@ -13,6 +13,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float jumpForce = 500;
 
     private bool isOnGround;
+    private bool isOnLaunchPad;
     private Rigidbody rb;
     private int count;
     private float movementX;
@@ -41,7 +42,7 @@ public class PlayerController : MonoBehaviour
         countText.text = "Count:" + count.ToString();
         if(count >= 12)
         {
-            winTextObject.SetActive(true);
+            SceneManager.LoadScene("m");
         }
     }
 
@@ -51,6 +52,7 @@ public class PlayerController : MonoBehaviour
 
         rb.AddForce(movement * speed);
         Restart();
+        Launch();
     }
 
     private void OnTriggerEnter(Collider other)
@@ -70,7 +72,6 @@ public class PlayerController : MonoBehaviour
         {
             rb.AddForce(new Vector3(0, jumpForce, 0));
         }
-
 
     }
 
@@ -94,7 +95,11 @@ public class PlayerController : MonoBehaviour
             isOnGround = true;
         }
 
-   
+        if (collision.gameObject.name == "Launch Pad")
+        {
+            isOnLaunchPad = true;
+        }
+
     }
 
     private void OnCollisionExit(Collision collision)
@@ -104,6 +109,20 @@ public class PlayerController : MonoBehaviour
         {
             isOnGround = false;
         }
+
+        if (collision.gameObject.name == "Launch Pad")
+        {
+            isOnLaunchPad = false;
+        }
+    }
+
+    private void Launch()
+    {
+        if (isOnLaunchPad)
+        {
+            rb.AddForce(new Vector3(0, 3000f, 0)); ;
+        }
+
     }
 }
 
