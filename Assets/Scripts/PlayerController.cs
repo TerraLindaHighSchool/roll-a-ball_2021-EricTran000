@@ -14,6 +14,7 @@ public class PlayerController : MonoBehaviour
 
     private bool isOnGround;
     private bool isOnLaunchPad;
+    private bool isOnBouncePad;
     private Rigidbody rb;
     private int count;
     private float movementX;
@@ -49,10 +50,11 @@ public class PlayerController : MonoBehaviour
     private void FixedUpdate()
     {
         Vector3 movement = new Vector3(movementX, 0.0f, movementY);
-
+        
         rb.AddForce(movement * speed);
         Restart();
         Launch();
+        Bounce();
     }
 
     private void OnTriggerEnter(Collider other)
@@ -100,6 +102,11 @@ public class PlayerController : MonoBehaviour
             isOnLaunchPad = true;
         }
 
+        if (collision.gameObject.name == "Bounce Pad")
+        {
+            isOnBouncePad = true;
+        }
+
     }
 
     private void OnCollisionExit(Collision collision)
@@ -114,15 +121,30 @@ public class PlayerController : MonoBehaviour
         {
             isOnLaunchPad = false;
         }
+
+        if (collision.gameObject.name == "Bounce Pad")
+        {
+            isOnBouncePad = false;
+        }
+
     }
 
     private void Launch()
     {
         if (isOnLaunchPad)
         {
-            rb.AddForce(new Vector3(0, 3000f, 0)); ;
+            rb.AddForce(new Vector3(0, 400, 0));
+            rb.AddForce(Vector3.forward*500);
         }
 
+    }
+
+    private void Bounce()
+    {
+        if (isOnBouncePad)
+        {
+            rb.AddRelativeForce(Vector3.back * 200);
+        }
     }
 }
 
