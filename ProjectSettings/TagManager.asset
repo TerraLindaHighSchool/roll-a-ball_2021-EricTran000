@@ -5,6 +5,10 @@ TagManager:
   serializedVersion: 2
   tags:
   - PickUp
+  - Bounce Pad L
+  - Bounce Pad R
+  - Bounce Pad W
+  - Bounce Pad S
   layers:
   - Default
   - TransparentFX

@@ -14,7 +14,10 @@ public class PlayerController : MonoBehaviour
 
     private bool isOnGround;
     private bool isOnLaunchPad;
-    private bool isOnBouncePad;
+    private bool isOnBouncePadL;
+    private bool isOnBouncePadR;
+    private bool isOnBouncePadW;
+    private bool isOnBouncePadS;
     private Rigidbody rb;
     private int count;
     private float movementX;
@@ -35,7 +38,6 @@ public class PlayerController : MonoBehaviour
 
         movementX = movementVector.x;
         movementY = movementVector.y;
-  
     }
 
     void SetCountText()
@@ -45,12 +47,12 @@ public class PlayerController : MonoBehaviour
         {
             SceneManager.LoadScene("m");
         }
+
     }
 
     private void FixedUpdate()
     {
         Vector3 movement = new Vector3(movementX, 0.0f, movementY);
-        
         rb.AddForce(movement * speed);
         Restart();
         Launch();
@@ -65,6 +67,28 @@ public class PlayerController : MonoBehaviour
             count = count + 1;
 
             SetCountText();
+
+        }
+
+        if (other.gameObject.CompareTag("Bounce Pad L"))
+        {
+            isOnBouncePadL = true;
+        }
+
+        if (other.gameObject.CompareTag("Bounce Pad R"))
+        {
+            isOnBouncePadR = true;
+        }
+
+        if (other.gameObject.CompareTag("Bounce Pad W"))
+        {
+            isOnBouncePadW = true;
+        }
+
+        if (other.gameObject.CompareTag("Bounce Pad S"))
+        {
+            isOnBouncePadS = true;
+
         }
     }
    
@@ -97,15 +121,33 @@ public class PlayerController : MonoBehaviour
             isOnGround = true;
         }
 
-        if (collision.gameObject.name == "Launch Pad")
+        if(collision.gameObject.name == "Launch Pad")
         {
             isOnLaunchPad = true;
         }
 
-        if (collision.gameObject.name == "Bounce Pad")
+        if (collision.gameObject.name == "Bounce Pad L")
         {
-            isOnBouncePad = true;
+            isOnBouncePadL = true;
         }
+
+        if (collision.gameObject.name == "Bounce Pad R")
+        {
+            isOnBouncePadR = true;
+        }
+
+        if (collision.gameObject.name == "Bounce Pad W")
+        {
+            isOnBouncePadW = true;
+        }
+
+        if (collision.gameObject.name == "Bounce Pad S")
+        {
+            isOnBouncePadS = true;
+        }
+
+
+
 
     }
 
@@ -122,18 +164,33 @@ public class PlayerController : MonoBehaviour
             isOnLaunchPad = false;
         }
 
-        if (collision.gameObject.name == "Bounce Pad")
+        if (collision.gameObject.name == "Bounce Pad L")
         {
-            isOnBouncePad = false;
+            isOnBouncePadL = false;
         }
 
+        if (collision.gameObject.name == "Bounce Pad R")
+        {
+            isOnBouncePadR = false;
+        }
+
+        if (collision.gameObject.name == "Bounce Pad W")
+        {
+            isOnBouncePadW = false;
+        }
+
+        if (collision.gameObject.name == "Bounce Pad S")
+        {
+            isOnBouncePadS = false;
+
+        }
     }
 
     private void Launch()
     {
         if (isOnLaunchPad)
         {
-            rb.AddForce(new Vector3(0, 400, 0));
+            rb.AddForce(new Vector3(0, 700, 0));
             rb.AddForce(Vector3.forward*500);
         }
 
@@ -141,9 +198,32 @@ public class PlayerController : MonoBehaviour
 
     private void Bounce()
     {
-        if (isOnBouncePad)
+        if (isOnBouncePadL)
         {
-            rb.AddRelativeForce(Vector3.back * 200);
+            rb.AddForce(Vector3.left * 1000);
+            rb.AddForce(new Vector3(0, 800, 0));
+            
+        }
+
+       if (isOnBouncePadR)
+        {
+            rb.AddForce(Vector3.right * 1000);
+            rb.AddForce(new Vector3(0, 800, 0));
+            
+        }
+
+       if (isOnBouncePadW)
+        {
+            rb.AddForce(Vector3.forward * 1000);
+            rb.AddForce(new Vector3(0, 800, 0));
+            
+        }
+
+       if (isOnBouncePadS)
+        {
+            rb.AddForce(Vector3.back * 1000);
+            rb.AddForce(new Vector3(0, 800, 0));
+            
         }
     }
 }
